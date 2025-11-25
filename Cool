@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RULES FOR A NEW WORLD</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            padding: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin: 6px;
+            padding: 8px 16px;
+            background: #0f0;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background: #0c0; }
+    </style>
+</head>
+<body>
+
+<pre id="text"></pre>
+<div id="buttons"></div>
+
+<script>
+let moral = 100;
+let lose_limit = 50;
+
+function log(msg) {
+    document.getElementById("text").textContent += msg + "\n";
+}
+
+function buttons(html) {
+    document.getElementById("buttons").innerHTML = html;
+}
+
+function status_check() {
+    if (moral <= lose_limit) {
+        log("Your moral has dropped too low. The citizens start a revolution. You lose the game.");
+        buttons("");
+        return false;
+    } else {
+        log("Your country continues forward. Current moral: " + moral + "\n");
+        return true;
+    }
+}
+
+function moral_check() {
+    if (moral >= 89) log("Citizens are thrilled\n");
+    else if (moral >= 79) log("Citizens are happy\n");
+    else if (moral >= 69) log("Citizens are ok\n");
+    else if (moral >= 50) log("Citizens are worried\n");
+}
+
+function normal_event() {
+    let roll = Math.random();
+    let split_chance = 0.09;
+    let unite_chance = 0.09;
+
+    if (roll < split_chance) {
+        log("Citizens are splitting. This will hurt moral.");
+        let penalty = Math.floor(Math.random() * 6) + 3;
+        moral -= penalty;
+        log("Moral dropped by " + penalty);
+    }
+    else if (roll < split_chance + unite_chance) {
+        log("Citizens unite. This improves moral.");
+        let bonus = Math.floor(Math.random() * 6) + 3;
+        moral += bonus;
+        log("Moral increased by " + bonus);
+    }
+    else {
+        log("Citizens calm down. Moral remains the same.");
+    }
+}
+
+let step = 0;
+function next() {
+    if (!status_check()) return;
+    moral_check();
+    step++;
+
+    if (step === 1) choice1();
+    if (step === 2) choice2();
+    if (step === 3) choice3();
+    if (step === 4) choice4();
+    if (step === 5) choice5();
+    if (step > 5) buttons("<h2>Game Finished</h2>");
+}
+
+function ask(question, yesAction, noAction) {
+    log(question);
+    buttons(`
+        <button onclick="${yesAction}">yes</button>
+        <button onclick="${noAction}">no</button>
+    `);
+}
+
+function choice1() {
+    ask(
+        "Will your government follow a democracy? (yes or no):",
+        "c1_yes()", "c1_no()"
+    );
+}
+function c1_yes() {
+    log("You choose to follow democracy.");
+    normal_event();
+    log("Moral: " + moral);
+    next();
+}
+function c1_no() {
+    log("You choose not to follow democracy.");
+    log("Moral -20");
+    moral -= 20;
+    log("Moral: " + moral);
+    next();
+}
+
+function choice2() {
+    ask(
+        "Will you fund education over war and inflation? (yes or no):",
+        "c2_yes()", "c2_no()"
+    );
+}
+function c2_yes() {
+    log("You choose education.");
+    normal_event();
+    log("Moral: " + moral);
+    next();
+}
+function c2_no() {
+    log("You choose war and inflation focus.");
+    log("Moral -10");
+    moral -= 10;
+    log("Moral: " + moral);
+    next();
+}
+
+function choice3() {
+    log("Will you focus on terrorism over drugs/crime? (yes or no):");
+
+    log("Citizens are split. This will hurt moral.");
+    let change = -1 * (Math.floor(Math.random() * 20) + 1);
+    moral += change;
+    log("Moral dropped by " + Math.abs(change));
+    log("Moral: " + moral);
+
+    buttons(`<button onclick="next()">Continue</button>`);
+}
+
+function choice4() {
+    ask(
+        "Will you allow the right to bear arms? (yes or no):",
+        "c4_yes()", "c4_no()"
+    );
+}
+function c4_yes() {
+    log("You allow the right to bear arms.");
+    if (Math.random() < 0.2) {
+        log("Citizens are splitting. This will hurt moral.");
+        let penalty = Math.floor(Math.random() * 6) + 3;
+        moral -= penalty;
+        log("Moral dropped by " + penalty);
+    } else {
+        log("Citizens calmed down. Moral remains the same.");
+    }
+    log("Moral: " + moral);
+    next();
+}
+function c4_no() {
+    log("You deny the right to bear arms.");
+    if (Math.random() < 0.2) {
+        log("Citizens unite. This improves moral.");
+        let bonus = Math.floor(Math.random() * 6) + 3;
+        moral += bonus;
+        log("Moral increased by " + bonus);
+    } else {
+        log("Citizens are divided. No major change in moral.");
+    }
+    log("Moral: " + moral);
+    next();
+}
+
+function choice5() {
+    ask(
+        "Anti-death penalty or for death penalty? ",
+        "c5_anti()", "c5_for()"
+    );
+}
+function c5_anti() {
+    log("You choose to be Anti-death penalty.");
+    normal_event();
+    log("Moral: " + moral);
+    next();
+}
+function c5_for() {
+    log("You choose to support the death penalty.");
+    normal_event();
+    log("Moral: " + moral);
+    next();
+}
+
+log("RULES FOR A NEW WORLD\n");
+log(
+"You are a new leader for a new and up and coming country." +
+" Your job is to set new rules for citizens of your country." +
+" As you set up these new rules and laws citizens will react to these choices." +
+" If they do not like the choices you are making the citizens will lose moral." +
+" You start off with 100 moral if you get to 50 moral or lower you lose the game and the citizens will start a revolution." +
+" Citizens have a chance to split which will hurt moral." +
+" Good luck!\n\n"
+);
+
+next();
+</script>
+
+</body>
+</html>
