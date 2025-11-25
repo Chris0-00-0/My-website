@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>You Can't Eat Cats Kevin</title>
-
+    <title>You cant eat cats kevin
+    </title>
     <style>
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #ffffff;
+            background: #f4f4f4;
         }
 
         header {
@@ -37,37 +37,13 @@
             text-decoration: underline;
         }
 
-        /* GAME AREA */
-        #text {
-            max-height: 70vh;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 30px auto;
-            width: 80%;
-            background-color: #ffffff;
-            font-family: monospace;
-            font-size: 18px;
-        }
-
-        #buttons {
+        .container {
+            padding: 40px;
             text-align: center;
-            margin-bottom: 40px;
         }
 
-        button {
-            margin: 6px;
-            padding: 10px 20px;
-            background-color: #add8e6;
-            color: #000000;
-            border: 1px solid #87ceeb;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #87ceeb;
+        h1 {
+            margin-top: 0;
         }
 
         footer {
@@ -79,200 +55,28 @@
         }
     </style>
 </head>
-
 <body>
 
-<header>
-    <h1>You Can't Eat Cats Kevin - The Game</h1>
-</header>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
 
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Game</a>
-    <a href="#">About</a>
-</nav>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Projects</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
 
-<div id="text"></div>
-<div id="buttons"></div>
+    <div class="container">
+        <h2>Hello!</h2>
+        <p>This is your new GitHub Pages website. Edit this text however you want.</p>
+        <p>If you want me to add more pages or design, just tell me!</p>
+    </div>
 
-<script>
-let moral = 100;
-let lose_limit = 50;
-
-const textEl = document.getElementById("text");
-const buttonsEl = document.getElementById("buttons");
-
-function log(msg) {
-    textEl.innerHTML += msg + "<br>";
-    textEl.scrollTop = textEl.scrollHeight;
-}
-
-function showButtons(options) {
-    buttonsEl.innerHTML = "";
-    options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt.label;
-        btn.onclick = opt.action;
-        buttonsEl.appendChild(btn);
-    });
-}
-
-function status_check() {
-    if (moral <= lose_limit) {
-        log("Your moral has dropped too low. The citizens start a revolution. You lose the game.");
-        buttonsEl.innerHTML = "";
-        return false;
-    }
-    return true;
-}
-
-function moral_check() {
-    if (moral >= 89) log("Citizens are thrilled<br>");
-    else if (moral >= 79) log("Citizens are happy<br>");
-    else if (moral >= 69) log("Citizens are ok<br>");
-    else if (moral >= 50) log("Citizens are worried<br>");
-}
-
-function normal_event() {
-    let roll = Math.random();
-    let split_chance = 0.09;
-    let unite_chance = 0.09;
-
-    if (roll < split_chance) {
-        log("Citizens are splitting. This will hurt moral.");
-        let penalty = Math.floor(Math.random() * 6) + 3;
-        moral -= penalty;
-        log("Moral dropped by " + penalty);
-    }
-    else if (roll < split_chance + unite_chance) {
-        log("Citizens unite. This improves moral.");
-        let bonus = Math.floor(Math.random() * 6) + 3;
-        moral += bonus;
-        log("Moral increased by " + bonus);
-    }
-    else {
-        log("Citizens calm down. Moral remains the same.");
-    }
-}
-
-function choice1() {
-    showButtons([
-        {label: "yes", action: () => {
-            log("You choose to follow democracy.");
-            normal_event();
-            next();
-        }},
-        {label: "no", action: () => {
-            log("You choose not to follow democracy.");
-            log("Moral -20");
-            moral -= 20;
-            next();
-        }}
-    ]);
-}
-
-function choice2() {
-    showButtons([
-        {label: "yes", action: () => {
-            log("You choose education.");
-            normal_event();
-            next();
-        }},
-        {label: "no", action: () => {
-            log("You choose war and inflation focus.");
-            log("Moral -10");
-            moral -= 10;
-            next();
-        }}
-    ]);
-}
-
-function choice3() {
-    log("Will you focus on terrorism over drugs/crime?");
-    showButtons([
-        {label: "yes", action: () => {
-            let change = -1 * (Math.floor(Math.random() * 20) + 1);
-            moral += change;
-            log("Citizens are split. This will hurt moral.");
-            next();
-        }},
-        {label: "no", action: () => {
-            let change = -1 * (Math.floor(Math.random() * 20) + 1);
-            moral += change;
-            log("Citizens are split. This will hurt moral.");
-            next();
-        }}
-    ]);
-}
-
-function choice4() {
-    showButtons([
-        {label: "yes", action: () => {
-            log("You allow the right to bear arms.");
-            if (Math.random() < 0.2) {
-                let penalty = Math.floor(Math.random() * 6) + 3;
-                moral -= penalty;
-                log("Moral dropped by " + penalty);
-            }
-            next();
-        }},
-        {label: "no", action: () => {
-            log("You deny the right to bear arms.");
-            if (Math.random() < 0.2) {
-                let bonus = Math.floor(Math.random() * 6) + 3;
-                moral += bonus;
-                log("Moral increased by " + bonus);
-            }
-            next();
-        }}
-    ]);
-}
-
-function choice5() {
-    showButtons([
-        {label: "anti-death penalty", action: () => {
-            log("You choose to be Anti-death penalty.");
-            normal_event();
-            next();
-        }},
-        {label: "for death penalty", action: () => {
-            log("You support the death penalty.");
-            normal_event();
-            next();
-        }}
-    ]);
-}
-
-let step = 0;
-function next() {
-    if (!status_check()) return;
-    moral_check();
-    step++;
-
-    if (step === 1) choice1();
-    else if (step === 2) choice2();
-    else if (step === 3) choice3();
-    else if (step === 4) choice4();
-    else if (step === 5) choice5();
-    else {
-        log("You have finished the game!");
-        buttonsEl.innerHTML = "";
-    }
-}
-
-log("RULES FOR A NEW WORLD<br>");
-log(
-    "You are a new leader for a rising country. " +
-    "Your job is to make laws, and citizens will react. " +
-    "If moral reaches 50 or lower, the citizens revolt and you lose.<br><br>"
-);
-
-next();
-</script>
-
-<footer>
-    © 2025 Your Website
-</footer>
+    <footer>
+        © 2025 My Website
+    </footer>
 
 </body>
 </html>
