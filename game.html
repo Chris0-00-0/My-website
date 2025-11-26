@@ -1,45 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You Can't Eat Cats Kevin - Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Can't Eat Cats Kevin - Game</title>
 
-    <style>
+<!-- ULTRA READABLE THEME -->
+<style>
+    body {
+        background-color: #000;
+        color: #fff;
+        font-family: "Courier New", monospace;
+        padding: 20px;
+        font-size: 22px;     
+        line-height: 1.7;
+    }
+
+    h1, a {
+        color: #fff;
+        font-size: 28px;
+    }
+
+    #text {
+        max-height: 60vh;
+        overflow-y: auto;
+        border: 3px solid #fff;
+        padding: 20px;
+        margin-bottom: 25px;
+        background-color: #000;
+        font-size: 22px;    
+        line-height: 1.7;
+    }
+
+    #buttons {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    button {
+        margin: 12px;
+        padding: 16px 28px;       
+        background-color: #fff;
+        color: #000;
+        border: 3px solid #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 20px;          
+        font-weight: bold;
+        min-width: 200px;
+    }
+
+    button:hover {
+        background-color: #ccc;
+    }
+
+    /* Mobile improvements */
+    @media (max-width: 600px) {
         body {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: monospace;
-            padding: 20px;
-            font-size: 18px;
-            line-height: 1.6;
-        }
-        #text {
-            max-height: 70vh;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #ffffff;
-        }
-        #buttons {
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 20px;
         }
         button {
-            margin: 6px;
-            padding: 10px 20px;
-            background-color: #add8e6;
-            color: #000000;
-            border: 1px solid #87ceeb;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            padding: 14px 22px;
+            min-width: 160px;
         }
-        button:hover {
-            background-color: #87ceeb;
+        #text {
+            font-size: 20px;
         }
-    </style>
+    }
+</style>
 </head>
 <body>
 
@@ -58,7 +87,9 @@ const buttonsEl = document.getElementById("buttons");
 
 function log(msg) {
     textEl.innerHTML += msg + "<br>";
-    textEl.scrollTop = textEl.scrollHeight;
+    setTimeout(() => {
+        textEl.scrollTop = textEl.scrollHeight;
+    }, 30);
 }
 
 function showButtons(options) {
@@ -109,7 +140,12 @@ function normal_event() {
     }
 }
 
+/* -------------------------
+   YOUR CHOICES (UNCHANGED)
+-------------------------- */
+
 function choice1() {
+    log("Will you follow democracy?");
     showButtons([
         {label: "yes", action: () => {
             log("You choose to follow democracy.");
@@ -125,6 +161,7 @@ function choice1() {
 }
 
 function choice2() {
+    log("Will you invest in education?");
     showButtons([
         {label: "yes", action: () => {
             log("You choose education.");
@@ -158,6 +195,7 @@ function choice3() {
 }
 
 function choice4() {
+    log("Will you allow the right to bear arms?");
     showButtons([
         {label: "yes", action: () => {
             log("You allow the right to bear arms.");
@@ -181,6 +219,7 @@ function choice4() {
 }
 
 function choice5() {
+    log("What is your stance on the death penalty?");
     showButtons([
         {label: "anti-death penalty", action: () => {
             log("You choose to be Anti-death penalty.");
@@ -194,6 +233,10 @@ function choice5() {
         }}
     ]);
 }
+
+/* -------------------------
+   GAME FLOW (unchanged)
+-------------------------- */
 
 let step = 0;
 
