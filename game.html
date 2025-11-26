@@ -5,31 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>You Can't Eat Cats Kevin - Game</title>
 
-<!-- ULTRA READABLE THEME -->
+<!-- ULTRA READABLE WHITE THEME -->
 <style>
     body {
-        background-color: #000;
-        color: #fff;
+        background-color: #ffffff;      /* WHITE BACKGROUND */
+        color: #000000;                 /* BLACK TEXT */
         font-family: "Courier New", monospace;
         padding: 20px;
-        font-size: 22px;     
+        font-size: 22px;
         line-height: 1.7;
     }
 
     h1, a {
-        color: #fff;
+        color: #000000;                 /* BLACK TITLE + LINKS */
         font-size: 28px;
     }
 
     #text {
         max-height: 60vh;
         overflow-y: auto;
-        border: 3px solid #fff;
+        border: 3px solid #000000;      /* BLACK BORDER */
         padding: 20px;
         margin-bottom: 25px;
-        background-color: #000;
-        font-size: 22px;    
+        background-color: #ffffff;      /* WHITE TEXT BOX */
+        font-size: 22px;
         line-height: 1.7;
+        color: #000000;
     }
 
     #buttons {
@@ -39,22 +40,21 @@
 
     button {
         margin: 12px;
-        padding: 16px 28px;       
-        background-color: #fff;
-        color: #000;
-        border: 3px solid #fff;
+        padding: 16px 28px;
+        background-color: #000000;      /* BLACK BUTTONS */
+        color: #ffffff;                 /* WHITE TEXT */
+        border: 3px solid #000000;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 20px;          
+        font-size: 20px;
         font-weight: bold;
         min-width: 200px;
     }
 
     button:hover {
-        background-color: #ccc;
+        background-color: #444444;
     }
 
-    /* Mobile improvements */
     @media (max-width: 600px) {
         body {
             font-size: 20px;
@@ -111,6 +111,10 @@ function status_check() {
     return true;
 }
 
+function show_moral() {
+    log("Moral: " + moral + "<br>");
+}
+
 function moral_check() {
     if (moral >= 89) log("Citizens are thrilled<br>");
     else if (moral >= 79) log("Citizens are happy<br>");
@@ -141,7 +145,7 @@ function normal_event() {
 }
 
 /* -------------------------
-   YOUR CHOICES (UNCHANGED)
+   CHOICES
 -------------------------- */
 
 function choice1() {
@@ -161,7 +165,7 @@ function choice1() {
 }
 
 function choice2() {
-    log("Will you invest in education?");
+    log("Do you choose to focus on education over controlling inflation?");
     showButtons([
         {label: "yes", action: () => {
             log("You choose education.");
@@ -235,7 +239,7 @@ function choice5() {
 }
 
 /* -------------------------
-   GAME FLOW (unchanged)
+   GAME FLOW
 -------------------------- */
 
 let step = 0;
@@ -243,6 +247,7 @@ let step = 0;
 function next() {
     if (!status_check()) return;
     moral_check();
+    show_moral();   // shows moral after every choice
     step++;
 
     if (step === 1) choice1();
