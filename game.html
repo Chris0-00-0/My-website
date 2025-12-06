@@ -1,33 +1,36 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>You Can't Eat Cats Kevin - Game</title>
 
-<!-- ULTRA READABLE WHITE THEME -->
+<!-- ================================
+     ULTRA READABLE WHITE THEME 
+     (Updated to Times New Roman)
+=================================== -->
 <style>
     body {
-        background-color: #ffffff;      /* WHITE BACKGROUND */
-        color: #000000;                 /* BLACK TEXT */
-        font-family: "Courier New", monospace;
+        background-color: #ffffff;
+        color: #000000;
+        font-family: "Times New Roman", serif;  /* Main font */
         padding: 20px;
         font-size: 22px;
         line-height: 1.7;
     }
 
     h1, a {
-        color: #000000;                 /* BLACK TITLE + LINKS */
+        color: #000000;
         font-size: 28px;
     }
 
     #text {
         max-height: 60vh;
         overflow-y: auto;
-        border: 3px solid #000000;      /* BLACK BORDER */
+        border: 3px solid #000000;
         padding: 20px;
         margin-bottom: 25px;
-        background-color: #ffffff;      /* WHITE TEXT BOX */
+        background-color: #ffffff;
         font-size: 22px;
         line-height: 1.7;
         color: #000000;
@@ -41,20 +44,22 @@
     button {
         margin: 12px;
         padding: 16px 28px;
-        background-color: #000000;      /* BLACK BUTTONS */
-        color: #ffffff;                 /* WHITE TEXT */
+        background-color: #000000;
+        color: #ffffff;
         border: 3px solid #000000;
         border-radius: 6px;
         cursor: pointer;
         font-size: 20px;
         font-weight: bold;
         min-width: 200px;
+        font-family: "Times New Roman", serif; /* Match page font */
     }
 
     button:hover {
         background-color: #444444;
     }
 
+    /* Responsive tweaks for smaller screens */
     @media (max-width: 600px) {
         body {
             font-size: 20px;
@@ -75,16 +80,25 @@
 <h1>You Can't Eat Cats Kevin – The Game</h1>
 <a href="index.html">⬅ Back to Home</a>
 
+<!-- GAME TEXT DISPLAY -->
 <div id="text"></div>
+
+<!-- BUTTONS FOR CHOICES -->
 <div id="buttons"></div>
 
 <script>
+/* ===============================
+   GAME VARIABLES & ELEMENT SETUP
+================================= */
 let moral = 100;
 let lose_limit = 50;
 
 const textEl = document.getElementById("text");
 const buttonsEl = document.getElementById("buttons");
 
+/* ===============================
+       BASIC OUTPUT FUNCTIONS
+================================= */
 function log(msg) {
     textEl.innerHTML += msg + "<br>";
     setTimeout(() => {
@@ -102,6 +116,9 @@ function showButtons(options) {
     });
 }
 
+/* ===============================
+           MORAL SYSTEM
+================================= */
 function status_check() {
     if (moral <= lose_limit) {
         log("Your moral has dropped too low. The citizens start a revolution. You lose the game.");
@@ -122,6 +139,7 @@ function moral_check() {
     else if (moral >= 50) log("Citizens are worried<br>");
 }
 
+/* Random normal event */
 function normal_event() {
     let roll = Math.random();
     let split_chance = 0.09;
@@ -144,10 +162,9 @@ function normal_event() {
     }
 }
 
-/* -------------------------
-   CHOICES
--------------------------- */
-
+/* ===============================
+           CHOICE SCENES
+================================= */
 function choice1() {
     log("Will you follow democracy?");
     showButtons([
@@ -238,16 +255,16 @@ function choice5() {
     ]);
 }
 
-/* -------------------------
-   GAME FLOW
--------------------------- */
-
+/* ===============================
+          GAME FLOW SYSTEM
+================================= */
 let step = 0;
 
 function next() {
     if (!status_check()) return;
+
     moral_check();
-    show_moral();   // shows moral after every choice
+    show_moral();
     step++;
 
     if (step === 1) choice1();
@@ -261,14 +278,25 @@ function next() {
     }
 }
 
+/* ===============================
+          GAME INTRO MESSAGE
+================================= */
 log("RULES FOR A NEW WORLD<br>");
 log(
     "You are the new leader of a rising nation. Your decisions affect the people's moral. " +
     "If moral reaches 50 or lower, the citizens revolt and you lose.<br><br>"
 );
 
-next();
+next(); // Begin game
 </script>
+
+<!-- ==================================
+     FOOTER (PROJECT STATUS)
+==================================== -->
+<p style="margin-top:40px; font-size:20px; color:#333;">
+    <em>This project was sadly scrapped due to complications.</em><br>
+    <em>New project in development.</em>
+</p>
 
 </body>
 </html>
