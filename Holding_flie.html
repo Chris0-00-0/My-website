@@ -1,44 +1,134 @@
 import random
 
-print(
-    'Welcome to Shoot, Defend, Stand-off. '
-    'This is a game where you will be going up against me. '
-    'You will have three options to pick from: shoot, defend, stand-off.'
-)
+print("""
+Welcome to Shoot, Defend, Stand-off!
 
-actions = ["stand_off", "defend", "shoot"]
+Here’s what each action does:
 
-# Health values
+• Shoot — You fire at your opponent using your current power.
+• Defend — You block most of the damage if you're attacked.
+• Stand off — if they defend you gain five life and power
+
+Good luck!
+""")
+
+actions = ["shoot", "defend", "stand off"]
+
+player_power = 20
+computer_power = 20
+
 player_life = 100
 computer_life = 100
 
+
+# ---------------------------
+# SMART AI (LEVEL 2 — FAIR)
+# ---------------------------
+def smart_choice(player_power, computer_power, player_life, computer_life):
+
+    # 1. If computer can finish player, shoot
+    if computer_power >= player_life:
+        return "shoot"
+
+    # 2. If player could finish computer, defend
+    if player_power >= computer_life:
+        return "defend"
+
+    # 3. If computer power is low → build up
+    if computer_power < 10:
+        return random.choices(
+            ["stand off", "defend"],
+            [0.7, 0.3]
+        )[0]
+
+    # 4. If computer is low on health → usually defend but not always
+    if computer_life < 30:
+        return random.choices(
+            ["defend", "shoot", "stand off"],
+            [0.6, 0.25, 0.15]
+        )[0]
+
+    # 5. General behavior
+    return random.choices(
+        ["shoot", "defend", "stand off"],
+        [0.45, 0.25, 0.30]
+    )[0]
+
+
+# ---------------------------
+# MAIN GAME LOOP
+# ---------------------------
 while True:
 
-    # Player chooses
     player_choice = input("Choose your action: ").lower()
 
-    # Computer randomly chooses AFTER the player chooses
-    computer_choice = random.choice(actions)
+    if player_choice not in actions:
+        print("Invalid choice. Choose: shoot, defend, stand off")
+        continue
+
+    # Smart AI selection
+    computer_choice = smart_choice(
+        player_power, computer_power, player_life, computer_life
+    )
+
     print("Computer chose:", computer_choice)
 
-    # --------------------------------------------------------
-    #               YOUR GAME LOGIC GOES HERE
-    #   Insert damage, healing, etc. based on both choices.
-    #
-    # Example you will change later:
-    # if player_choice == "shoot" and computer_choice != "defend":
-    #     computer_life -= 20
-    #
-    # if computer_choice == "shoot" and player_choice != "defend":
-    #     player_life -= 20
-    #
-    # --------------------------------------------------------
+    # ---------------------------
+    # COMBAT RESOLUTION
+    # ---------------------------
 
-    # Show current health each round
-    print(f"Your health: {player_life}")
+    # Both shoot
+    if player_choice == 'shoot' and computer_choice == 'shoot':
+        player_life -= computer_power
+        computer_life -= player_power
+
+    # Player shoots, computer defends
+    elif player_choice == 'shoot' and computer_choice == 'defend':
+        computer_life -= int(player_power * 0.05)  # blocks 95%
+        computer_power += 5
+
+    # Player shoots, computer stand off
+    elif player_choice == 'shoot' and computer_choice == 'stand off':
+        computer_life -= player_power
+
+    # Player defends, computer shoots
+    elif player_choice == 'defend' and computer_choice == 'shoot':
+        player_life -= int(computer_power * 0.05)  # blocks 95%
+        player_power += 5
+
+    # Both defend
+    elif player_choice == 'defend' and computer_choice == 'defend':
+        pass
+
+    # Player defends, computer stand off
+    elif player_choice == 'defend' and computer_choice == 'stand off':
+        computer_life += 5
+        computer_power += 5
+
+    # Player stand off, computer shoots
+    elif player_choice == 'stand off' and computer_choice == 'shoot':
+        player_life -= computer_power
+
+    # Player stand off, computer defends
+    elif player_choice == 'stand off' and computer_choice == 'defend':
+        player_life += 5
+        player_power += 5
+
+    # Both stand off
+    elif player_choice == 'stand off' and computer_choice == 'stand off':
+        pass
+
+    # ---------------------------
+    # STATUS DISPLAY
+    # ---------------------------
+    print(f"\nYour health: {player_life}")
     print(f"Computer health: {computer_life}")
+    print(f"Your power: {player_power}")
+    print(f"Computer power: {computer_power}\n")
 
-    # Game over checks
+    # ---------------------------
+    # WIN/LOSE CHECKS
+    # ---------------------------
     if player_life <= 0:
         print("You lost the game!")
         break
@@ -46,8 +136,4 @@ while True:
     if computer_life <= 0:
         print("You won the game!")
         break
-   
-
-
-
 
